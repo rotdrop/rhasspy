@@ -178,7 +178,7 @@ AS_CASE([$host_cpu],
         precise_arch=aarch64
 
         is_porcupine_enabled=yes
-        is_snowboy_enabled=no
+        is_snowboy_enabled=yes
 
         is_wake_pocketsphinx_enabled=yes
         is_stt_pocketsphinx_enabled=yes
@@ -188,8 +188,8 @@ AS_CASE([$host_cpu],
 
         is_julius_enabled=yes
 
-        is_deepspeech_enabled=no
-        deepspeech_from=NONE
+        is_deepspeech_enabled=yes
+        deepspeech_arch=arm64
 
         is_opengrm_enabled=yes
 

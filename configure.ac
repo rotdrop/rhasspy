@@ -642,12 +642,12 @@ AS_IF([test "x${is_julius_enabled}x${julius_from}" = xyesxsource],
     ])
 
 dnl kaldi needs ATLAS
-AS_IF([test "x$is_kaldi_enabled" = xyes],
-    [
-        AC_CHECK_LIB(atlas, ATL_xerbla, [], [
-            AC_MSG_ERROR([ATLAS is required for Kaldi (libatlas-base-dev package)])
-        ])
-    ])
+#AS_IF([test "x$is_kaldi_enabled" = xyes],
+#    [
+#        AC_CHECK_LIB(atlas, ATL_xerbla, [], [
+#            AC_MSG_ERROR([ATLAS is required for Kaldi (libatlas-base-dev package)])
+#        ])
+#    ])
 
 dnl kaldi needs a C++ compiler (and a ton of other things)
 AS_IF([test "x${is_kaldi_enabled}x${kaldi_from}" = xyesxsource],

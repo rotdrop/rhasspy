@@ -61,6 +61,17 @@ fi
 
 profile_dir="${user_profiles}/${profile_name}"
 
+# write own pid-file
+self_pid_path="${profile_dir}/rhasspy-voltron.pid"
+if [ -f "$self_pid_path" ]; then
+    old_pid=$(cat $self_pid_path)
+    if [ -d "/proc/${old_pid}" ]; then
+        [ -n "$old_pid" ] && kill -INT -$old_pid
+        sleep 10
+    fi
+fi
+echo $$ > $self_pid_path
+
 # Set environment variables
 export RHASSPY_PROFILE="${profile_name}"
 export RHASSPY_PROFILE_DIR="${profile_dir}"
@@ -150,6 +161,14 @@ fi
 # Run assistant
 log_path="${profile_dir}/supervisord.log"
 pid_path="${profile_dir}/supervisord.pid"
+
+function finish {
+    [ -n "${web_pid}" ] && kill -INT "${web_pid}"
+    [ -f "${pid_path}" ] && kill -INT "$(cat ${pid_path})"
+    rm -f ${self_pid_path}
+}
+
+trap finish EXIT
 
 echo 'Starting services...'
 "${this_dir}/voltron-run" \

@@ -61,12 +61,14 @@ fi
 
 profile_dir="${user_profiles}/${profile_name}"
 
+KILL=/bin/kill
+
 # write own pid-file
 self_pid_path="${profile_dir}/rhasspy-voltron.pid"
 if [ -f "$self_pid_path" ]; then
     old_pid=$(cat $self_pid_path)
     if [ -d "/proc/${old_pid}" ]; then
-        [ -n "$old_pid" ] && kill -INT -$old_pid
+        [ -n "$old_pid" ] && $KILL -INT -$old_pid
         sleep 10
     fi
 fi
@@ -152,7 +154,7 @@ if [[ -z "${no_web_server}" ]]; then
     web_pid=$!
 
     function finish {
-        kill "${web_pid}"
+        $KILL "${web_pid}"
     }
 
     trap finish EXIT
@@ -163,8 +165,8 @@ log_path="${profile_dir}/supervisord.log"
 pid_path="${profile_dir}/supervisord.pid"
 
 function finish {
-    [ -n "${web_pid}" ] && kill -INT "${web_pid}"
-    [ -f "${pid_path}" ] && kill -INT "$(cat ${pid_path})"
+    [ -n "${web_pid}" ] && $KILL -INT "${web_pid}"
+    [ -f "${pid_path}" ] && $KILL -INT "$(cat ${pid_path})"
     rm -f ${self_pid_path}
 }
 

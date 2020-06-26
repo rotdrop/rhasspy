@@ -67,8 +67,10 @@ KILL=/bin/kill
 self_pid_path="${profile_dir}/rhasspy-voltron.pid"
 if [ -f "$self_pid_path" ]; then
     old_pid=$(cat $self_pid_path)
-    if [ -d "/proc/${old_pid}" ]; then
-        [ -n "$old_pid" ] && $KILL -INT -$old_pid
+    if [ -n "$old_pid" ] &&\
+           [ -d "/proc/${old_pid}" ] &&\
+           ps axw|grep -qs "${old_pid}"|grep -qs rhasspy; then
+        $KILL -INT -- -$old_pid
         sleep 10
     fi
 fi
